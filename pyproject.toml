@@ -1,0 +1,93 @@
+[project]
+name = "nyt-mcp"
+version = "0.1.0"
+description = "MCP server for the New York Times APIs"
+readme = "README.md"
+authors = [{ name = "Joe Saia", email = "joe5saia@gmail.com" }]
+license = "MIT"
+keywords = ["mcp", "nyt", "new-york-times", "api"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+requires-python = ">=3.12"
+dependencies = [
+    "beautifulsoup4>=4.14.3",
+    "httpx>=0.28.1",
+    "mcp[cli]>=1.26.0",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.13.1",
+]
+
+[project.scripts]
+nyt-mcp = "nyt_mcp.server:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "pytest-asyncio>=1.3.0",
+    "ruff>=0.15.5",
+    "ty>=0.0.21",
+]
+
+[project.urls]
+Homepage = "https://github.com/joe5saia/nyt-mcp"
+Repository = "https://github.com/joe5saia/nyt-mcp"
+Issues = "https://github.com/joe5saia/nyt-mcp/issues"
+
+[build-system]
+requires = ["uv_build>=0.9.28,<0.10.0"]
+build-backend = "uv_build"
+
+# ---------------------------------------------------------------------------
+# Ruff – linting & formatting
+# ---------------------------------------------------------------------------
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "S",   # flake8-bandit (security)
+    "A",   # flake8-builtins
+    "C4",  # flake8-comprehensions
+    "DTZ", # flake8-datetimez
+    "RET", # flake8-return
+    "SIM", # flake8-simplify
+    "TCH", # flake8-type-checking
+    "ARG", # flake8-unused-arguments
+    "PTH", # flake8-use-pathlib
+    "RUF", # ruff-specific rules
+    "D",   # pydocstyle
+]
+ignore = [
+    "D100",  # missing module docstring (handled at package level)
+    "D104",  # missing public package docstring
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "D"]
+
+# ---------------------------------------------------------------------------
+# ty – type checking
+# ---------------------------------------------------------------------------
+[tool.ty.environment]
+python-version = "3.12"
+
+[tool.ty.rules]
+possibly-unresolved-reference = "error"
