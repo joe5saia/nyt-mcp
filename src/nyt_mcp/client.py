@@ -217,32 +217,6 @@ class NYTClient:
         # Truncate to avoid overwhelming context windows.
         return [_parse_article_doc(doc) for doc in docs[:50]]
 
-    # ------------------------------------------------------------------
-    # Read article content
-    # ------------------------------------------------------------------
-
-    async def fetch_article_text(self, url: str) -> str:
-        """Fetch and extract the visible text from an NYT article page.
-
-        Args:
-            url: The full URL of an NYT article.
-
-        Returns:
-            The extracted article text.
-        """
-        from bs4 import BeautifulSoup
-
-        resp = await self._http.get(url, follow_redirects=True)
-        resp.raise_for_status()
-        soup = BeautifulSoup(resp.text, "html.parser")
-
-        # NYT article body paragraphs live inside <p> tags within
-        # <article> or story-body containers. Fall back to all <p> tags.
-        article_tag = soup.find("article")
-        container = article_tag if article_tag else soup
-        paragraphs = container.find_all("p")
-        return "\n\n".join(p.get_text(strip=True) for p in paragraphs if p.get_text(strip=True))
-
 
 # ---------------------------------------------------------------------------
 # Helpers

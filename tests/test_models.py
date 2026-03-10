@@ -13,6 +13,7 @@ from nyt_mcp.models import (
     MostPopularRequest,
     NewswireRequest,
     TopStoriesRequest,
+    TopStoriesSection,
 )
 
 
@@ -51,7 +52,7 @@ class TestTopStoriesRequest:
         assert req.section.value == "home"
 
     def test_explicit_section(self):
-        req = TopStoriesRequest(section="world")
+        req = TopStoriesRequest(section=TopStoriesSection.WORLD)
         assert req.section.value == "world"
 
 
@@ -63,7 +64,7 @@ class TestMostPopularRequest:
 
     def test_invalid_period(self):
         with pytest.raises(ValidationError):
-            MostPopularRequest(period=2)
+            MostPopularRequest(period=2)  # type: ignore[arg-type]
 
 
 class TestNewswireRequest:

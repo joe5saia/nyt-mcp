@@ -280,27 +280,6 @@ async def get_archive(
     return "\n".join(lines)
 
 
-@mcp.tool()
-async def read_article(
-    ctx: object,
-    url: str,
-) -> str:
-    """Read the full text of an NYT article given its URL.
-
-    Args:
-        ctx: MCP context (injected automatically).
-        url: Full URL of the NYT article (e.g. https://www.nytimes.com/...).
-
-    Returns:
-        The extracted article text, or an error message.
-    """
-    client = _get_client(ctx)
-    text = await client.fetch_article_text(url)
-    if not text:
-        return "Could not extract article text. The article may require a subscription."
-    return text
-
-
 # ---------------------------------------------------------------------------
 # Entrypoint
 # ---------------------------------------------------------------------------

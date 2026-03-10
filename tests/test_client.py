@@ -189,27 +189,3 @@ class TestBestsellers:
         assert results[0].rank == 1
         assert results[0].author == "Author Name"
 
-
-class TestFetchArticleText:
-    @pytest.mark.asyncio
-    async def test_extracts_text(self, client: NYTClient):
-        html = """
-        <html>
-        <body>
-            <article>
-                <p>First paragraph of article.</p>
-                <p>Second paragraph of article.</p>
-            </article>
-        </body>
-        </html>
-        """
-        resp = httpx.Response(
-            status_code=200,
-            text=html,
-            request=httpx.Request("GET", "https://nytimes.com/article"),
-        )
-        with patch.object(client._http, "get", new_callable=AsyncMock) as mock_get:
-            mock_get.return_value = resp
-            text = await client.fetch_article_text("https://nytimes.com/article")
-        assert "First paragraph" in text
-        assert "Second paragraph" in text
